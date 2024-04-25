@@ -1,0 +1,78 @@
+Dada una lista simplemente encadenada que contiene datos de todas las provincias de la República Argentina: 
+nombre, capital, cantidad total de habitantes y cantidad de analfabetos, y está ordenada en forma decreciente
+ por número de habitantes analfabetos, generar otras tres listas que contengan el nombre, la capital y
+ el porcentaje de analfabetos de las Provincias que respondan a las siguientes restricciones.
+
+L1: <= 10 % analfabetos
+L2: 16 a 25 % analfabetos
+L3: => 26 % analfabetos
+
+ACCION 4.5 (prim: puntero a nodo) ES
+    AMBIENTE
+        nodo = registro
+            nombre: AN(20)
+            capital: AN(20)
+            cant_habitantes: entero
+            cant_analfabetos: entero
+            prox: puntero a nodo
+        finregistro
+
+        p, prim, ant: puntero a nodo
+
+        nodo2= registro
+            nombre: AN(20)
+            capital: AN(20)
+            porcentaje: entero
+            prox: puntero a nodo2
+        finregistro
+
+        prim1, prim2, prim3, q: puntero a nodo2
+
+    PROCESO
+
+        prim1:=nil
+        prim2:=nil
+        prim3:=nil
+
+        p:=prim //primero de la lista q ya tengo 
+        Mientras p<>nil hacer
+            nuevo(q)
+            dato := (*p.cant_analfabetos/*p.cant_habitantes)*100 //calculo porcentaje 
+            *q.nombre:=*p.nombre
+            *q.capital:=*p.capital
+            *q.porcentaje:=dato
+            Si dato <= 10 entonces //L1
+                si prim1=nil entonces  //si esta vacia 
+                    prim1:=q
+                    *q.prox:=nil
+                sino
+                    *q.prox:=prim1
+                    prim1:=q
+                finsi  //carga encolada 
+            sino
+                Si dato >=16 y dato <=25 entonces //L2
+                    si prim2=nil entonces
+                        prim2:=q
+                        *q.prox:=nil
+                    sino
+                        *q.prox:=prim2
+                        prim2:=q
+                    finsi
+                sino
+                    si dato >=26 entonces
+                        si prim3=nil entonces
+                        prim3:=q
+                        *q.prox:=nil
+                    sino
+                        *q.prox:=prim3
+                        prim3:=q
+                    finsi
+                finsi
+            Finsi
+            p:=*p.prox
+        FinMientras 
+FINACCION
+
+            
+
+

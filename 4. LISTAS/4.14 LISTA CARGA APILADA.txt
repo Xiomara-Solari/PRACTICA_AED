@@ -1,0 +1,45 @@
+
+Se desea ingresar una serie de números, e imprimirlos en el orden contrario al de ingreso. Diseñar un algoritmo 
+que satisfaga tal requerimiento, utilizando la estructura de datos más apropiada.
+
+ACCION 4.14 ES 
+    AMBIENTE 
+        nodo=registro
+            numero: entero
+            prox:puntero a nodo
+        finregistro 
+
+        prim, p, q: puntero a nodo 
+        op:("si", "no")
+        num:entero 
+
+    PROCESO
+    prim:=nil  //creamos lista nueva 
+
+    esc("¿Desea ingresar una serie de numeros?")
+    leer(op)
+    Mientras op="si" hacer 
+        esc("ingrese el numero")
+        leer(num)
+        nuevo(q)
+        *q.numero:=num 
+        si prim=nil entonces   //esta es una carga apilada para el orden invertido 
+            prim:=q
+            *q.prox:=nil 
+        sino 
+            *q.prox:=prim 
+            prim:=q
+        finsi 
+        esc("desea ingresar otro numero?")
+        leer(op)
+    finmientras 
+    si prim=nil entonces 
+        esc("la lista no ha sido cargada")
+    sino 
+        p:=prim 
+        Mientras p<>nil entonces 
+            esc(*p.numero)
+            p:=*p.prox 
+        Finmientras 
+    Finsi 
+FINACCION 

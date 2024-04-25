@@ -1,0 +1,101 @@
+En una empresa de servicios motorizados que NO posee una cantidad fija de integrantes, pero siempre es mayor 
+que 1 (uno). Los datos de las personas está almacenados en un archivo (DNI, Nombre, Antigüedad) ordenado 
+por DNI. Realizar un algoritmo que permita generar una lista de asignación (usando una estructura de lista 
+doblemente encadenada), ordenada al principio por antigüedad, y un proceso que realice dicha asignación, 
+en cada solicitud, por turno según orden en la lista. Una vez asignado dicha persona se va al final de la 
+lista para esperar su nueva asignación. Al final del día informar cuantas asignaciones tuvo cada integrante.
+
+accion 4.11 es
+
+persona=registro
+    DNI: N(8)
+    nombre:AN (30)
+    antig: N(2)
+fin_registro
+
+arch_p: archivo de persona ordenado por DNI 
+reg: persona 
+
+nodo=registro
+    dni: N(8)
+    nom: N(30)
+    asig: N(3)
+    antig: N(2)
+    prox: puntero a nodo
+    ant: puntero a nodo
+fin_registro
+
+p, q, prim, ult: puntero a nodo
+op: ("si", "no") 
+
+proceso
+prim:= nill
+ult:= nill
+abrir (arch_p)
+leer (arch_p, reg)
+
+
+mientras NFDA (arch_p) hacer
+    neuvo (q)
+    *q.dni:= reg.DNI 
+    *q.nom:= reg.nombre
+    *q.asig:= 0
+    *q.antig:= reg.antig
+
+    si prim = nill entonces // para mi primer elemento 
+        prim:= q
+        *q.prox:= nill
+        *q.ant:= nill 
+        ult:= q 
+    sino
+        p:= prim // para pararnos en el primer elemento de la lista 
+        mientras (p<> nill) y *q.antig < *p.antig hacer
+            p:= *p.prox
+        fin_mientras
+        si p=prim entonces 
+            *p.ant:=q
+            *q.prox:=p
+            *q.ant:= nill
+            prim:= q
+        sino
+            si p=nill entonces  // esto es en caso de que sea el ultimo elemento
+                *ult.prox:= q 
+                *q.ant:= ult
+                *q.prox:=nill
+                ult:=q         // ult:=q se hace a lo ultimo, antes se deben hacer las conexiones
+            sino 
+                *(*p.ant).prox:= q
+                *q.ant:=*p.ant
+                *q.prox:= p
+                *p.ant:= q
+            fin_si 
+        fin_si 
+    fin_si
+    leer (arch_p, reg)
+fin_mientras 
+cerrar (arch_p)
+
+escribir ("Desea relaizar asignaciones? si/no")
+leer (op)
+
+mientras (op="si") hacer
+    p=prim 
+    Escribir ("La asignacion corresponde al empleado", *p.nom, "-", *p.dni)
+    *p.asig:= *p.asig + 1
+    mientras p <> nill hacer
+        p:= *p.prox
+    fin_mientras
+    *p.ant:= ult 
+    *ult.prox:= p  // cada vez que se accede a un puntero INTERNO se usa *
+    *p.prox:=nill 
+    ult:=p   // no se usa * por que NO se accede a puntero interno
+
+    escribir ("Desea relaizar otra asignacion? si/no")
+    leer (op)
+fin_mientras
+
+p:=prim // me paro en el primer nodo
+mientras p <> nill hacer
+    Escribir ("El integrante:" *p.nom, " tuvo ", *p.asig, "asignaciones" )
+    p:=p.prox
+fin_mientras 

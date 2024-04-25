@@ -1,0 +1,97 @@
+
+Se dispone de una lista circular con un conjunto de números naturales. Este conjunto está dividido
+en 6 grupos. En cada grupo el primer elemento indica la cantidad de números subsiguientes a él que
+integran dicho grupo. 
+
+|6| 1 2 3 4 5 6 |7| 1 2 3 4 5 6 7 
+
+Se desea generar una nueva lista doblemente encadenada en la cual cada nodo
+contendrá el promedio de cada grupo. Dicha lista debe quedar ordenada en forma ascendente y, 
+al final se debe informar cuál fue el máximo y el mínimo promedio de todo el conjunto de números.
+
+ACCION (primc:puntero a nodo) ES //mando como parámetro la lista que ya tengo 
+AMBIENTE
+    nodo=registro
+        dato:entero //el numero natural 
+        prox: puntero a nodo
+    finregistro
+
+    primc, pc, antc: puntero a nodo
+
+    nododoble= registro //la lista que tengo que crear 
+        dato: real
+        prox:puntero a nododoble
+        ant:puntero a nododoble //porque es una lista doblemente enlazada 
+    finregistro
+
+    prim, q, p, ult: puntero a nododoble 
+
+    procedimiento insertardoble es
+        nuevo(q)
+        *q.dato:=promedio 
+        Si prim=nill entonces 
+            prim:=q
+            ult:=q
+            *q.ant:=nill
+            *q.prox:=nill
+        sino 
+            p:=prim
+            mientras (p<>nill) y (*q.dato < *p.dato) hacer
+                p:=*p.prox
+            finmientras 
+            Si p=prim entonces
+                prim:=q
+                *q.ant:=nill
+                *q.prox:=p
+                *p.ant:=q
+            sino 
+                si p=nill entonces 
+                    *q.prox:=nill
+                    *q.ant:=ult
+                    *ult.prox:=q
+                    ult:=q
+                sino 
+                    *q.prox:=p
+                    *q.ant:=*p.ant
+                    *p.ant:=q
+                    *(*p.ant).prox:=q
+                finsi
+            finsi 
+        finsi 
+    finprocedimiento 
+                  
+PROCESO
+    pc:=primc //me paro en el primer elemento de la lista circular
+    prim:=nill //creo lista doble 
+    ult:=nill
+    grupo:=1
+    promedio:=0
+    Mientras grupo <=6 hacer //porque tengo seis grupos 
+        control:=*pc.dato //es la cantidad de elementos que le siguen 
+        suma:=0
+        Para i:=1 a control hacer 
+            pc:=*pc.prox
+            suma:=suma + *pc.dato
+        finpara
+        pc:=*pc.prox //estoy parada en el siguiente grupo 
+        //quedo en el nodo del siguiente grupo 
+        promedio:= suma/control 
+        insertardoble()
+        grupo:= grupo + 1
+    Finmientras 
+
+    menor:=HV 
+    mayor:=LV 
+    Mientras (p<>nil) hacer  //estoy recorriendo mi lista de promedios 
+        Si *p.dato < menor entonces 
+            menor:=*p.dato    
+        Finsi 
+        Si *p.dato > mayor entonces   
+            mayor:=*p.dato
+        finsi 
+        p:=*p.prox 
+    FinMientras 
+    ESC("El menor promedio es", menor, "y el mayor promedio es", mayor)
+FINACCION 
+        
+

@@ -1,0 +1,127 @@
+Ejercicio 4.6¶
+En el restaurante ÑOQUIS se está pensando en una solución informática para el soporte de datos 
+del nuevo sistema de atención a clientes. Se han decidido por LISTAS por su dinamismo en cuanto 
+a la cantidad de elementos. Diseñe un algoritmo que realice las siguientes funciones:
+
+Añadir cliente al ser atendido (lista simple ordenada por Nombre del Cliente).
+Registrar su consumo (Acumular el Total Consumido en valores de montos).
+Realizar el cobro (emitir ticket con Nombre, Fecha, Número de Mesa y Total).
+Eliminar del listado de atención.
+La información almacenada debe mantenerse ordenada por Nombre del cliente.
+
+ACCION 4.6 ES
+    AMBIENTE
+        fecha=registro
+            aa: N(4)
+            mm: 1..12
+            dd:1..31
+        finregistro
+        nodo= registro
+            nombre_cliente: AN(20)
+            total_consumo: N(5,2)
+            fecha_c: fecha
+            numero_mesa: N(2)
+            prox:puntero a nodo
+        finregistro
+
+        prim, p, q, ant: puntero a nodo
+
+        procedimiento busqueda_cliente () es
+            esc("ingrese el nombre del cliente")
+            leer(nombre)
+            Mientras p<>nil y *p.nombre_cliente <> nombre hacer //puede buscarse por numero de mesa 
+                p:=*p.prox
+            FinMientras
+            Si p=nil entonces
+                esc("cliente no encontrado, debe dar el alta")
+            sino
+                esc("el cliente fue encontrado)
+            finsi
+        finprocedimiento
+
+        procedimiento act_consumo es
+            busqueda_cliente()
+            esc("ingrese el consumo total")
+            leer(consumo)
+            *p.total_consumo:= *p.total_consumo + consumo
+        finprocedimiento
+
+        procedimiento imprimir_ticket es
+            busqueda_cliente()
+            esc("NOMBRE DEL CLIENTE:" *p.nombre_cliente)
+            esc("FECHA:" *p.fecha_c)
+            esc("NUMERO DE MESA:" *p.numero_mesa)
+            esc("TOTAL CONSUMO:" *p.total_consumo)
+        finprocedimiento
+
+
+        procedimiento alta_cliente es
+            esc("ingrese nombre del cliente")
+            leer(*q.nombre_cliente)
+            esc("ingrese numero de mesa")
+            leer(*q.numero_mesa)
+            *q.total_consumo:=0
+            *q.fecha_c:= fecha_sistema()
+            si prim=nil entonces
+                prim:=q
+                *q.prox:=nil
+            sino
+                p:=prim
+                Mientras p<>nil y *q.nombre_cliente < *p.nombre_cliente hacer
+                    p:=*p.prox
+                FinMientras
+                Si p=prim entonces 
+                    *q.prox.= p
+                    prim:=q
+                sino //en el medio o en lo ultimo 
+                    *ant.prox:=q
+                    *q.prox:=p
+                finsi
+            finsi
+        finprocedimiento
+
+        procedimiento eliminarcliente()
+		esc("ingrese nombre de cliente a eliminar");
+		leer(nombre)
+		si prim= nil entonces
+			esc("lista vacia");
+		sino
+			p:= prim
+			MIENTRAS p<> nil y (p.nombre_cliente <> nombre) HACER
+				ant:= p
+				p:= *p.prox
+			FM
+			si p = nil entonces
+				esc("cliente no encontrado")
+			sino
+				si p = prim entonces
+					prim:= *p.prox
+				sino
+					*ant.prox:= *p.prox
+				fs
+			fs
+			Disponer(p)
+		fs
+	fp
+
+    op: ("s", "n")
+    op1: 1..4
+    nombre: AN(20)
+    
+    PROCESO
+        p:=prim
+        esc("¿desea realizar una operacion? s/n")
+        leer(op)
+        Mientras op="s" hacer
+            esc("seleccione la opcion que corresponda")
+            leer(op2)
+            segun op2 hacer
+                1: alta_cliente()
+                2: act_consumo()
+                3: eliminarcliente()
+                otro: imprimir_ticket()
+            finsegun
+            esc("¿desea realizar otra operacion?2)
+            leer(op)
+        FinMientras
+    FINACCION

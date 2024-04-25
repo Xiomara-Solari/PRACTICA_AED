@@ -1,0 +1,74 @@
+4.7 
+Genere un algoritmo que recorra una secuencia texto y genere una lista
+simplemente encadenada con la frecuencia de utilización de cada letra. 
+La lista debe mantenerse ordenada alfabéticamente y
+al final informar cual fue la frecuencia de cada letra y cuáles fueron la de mayor y menor frecuencia.
+
+AMBIENTE
+    nodo=registro
+        letra: AN(1)
+        frecuencia: entero
+        prox:puntero a nodo
+    finregistro
+    sec: secuencia de caracter
+    v: caracter
+    prim, q, ant, p: puntero a nodo 
+
+PROCESO
+    Arrancar(sec)
+    Avanzar(sec, v)
+    prim:=nill
+
+    MIENTRAS NFDS(sec) HACER
+        Si prim=nill entonces //si es mi primer elemento 
+            nuevo (q)
+            *q.letra:=v
+            *q.frecuencia:=q.frecuencia + 1
+        sino 
+            Mientras (p<>nil) hacer
+                Si *p.letra = v entonces
+                    *p.frecuencia:=¨*p.frecuencia + 1
+                Sino 
+                    nuevo (q)
+                    *q.letra:=v
+                    *q.frecuencia:=q.frecuencia + 1
+                    p:=prim //me voy al primer elemento 
+                    Mientras (p<>nil) y (*q.letra < *p.letra) hacer 
+                        p:=*p.prox
+                    FinMientras
+                    Si p=prim entonces
+                        *q.prox:=p
+                        prim:=q
+                    sino
+                        *ant.prox:=q
+                        *q.prox:=p
+                    finsi
+                finsi 
+                p:=*p.prox
+            FinMientras
+        finsi
+        Avanzar(sec,v)
+    FINMIENTRAS
+    max_frecuencia:=0
+    max_letra:=" "
+    min_frecuencia:=HV
+    min_letra:=" "
+
+    Mientras p<>nil hacer
+        esc("la letra", *p.letra, "tuvo", *p.frecuencia, "frecuencia") 
+        Si max_frecuencia < *p.frecuencia entonces
+            max_letra:=*p.letra
+            max_frecuencia:=*p.frecuencia
+        finsi
+        Si min_frecuencia > *p.frecuencia entonces
+            min_frecuencia:=*p.frecuencia
+            min_letra:=*p.letra
+        finsi 
+        p:=*p.prox
+    Finmientras
+
+    esc("la letra", min_letra, "tuvo la menor frecuencia", min_frecuencia)
+    esc("la letra", max_letra, "tuvo la mayor frecuencia", max_frecuencia)
+    
+
+

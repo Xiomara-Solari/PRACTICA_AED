@@ -1,0 +1,83 @@
+Ejercicio 4.15¶
+Supóngase que, utilizando una lista encadenada, se implementa una cola Q (estructura 'FIFO', es decir, 'primero en entrar, primero en salir').
+ Diseñar un algoritmo que permita insertar o extraer un elemento, comprobando siempre si la cola está vacía o no.
+
+ ACCION 4.15 (prim:puntero a nodo) ES 
+    AMBIENTE 
+        nodo=registro 
+            dato: entero 
+            prox:puntero a nodo
+        finregistro 
+        p, q, prim, ant: puntero a nodo 
+
+        procedimiento comprobar es
+            si prim=nil entonces 
+                esc("la lista esta vacía")
+                bandera:=falso
+            sino 
+                bandera:=verdadero
+            finsi 
+        finprocedimiento 
+
+
+        procedimiento insertar es 
+            comprobar()
+            nuevo(q)
+            esc("ingrese el elemento que desea insertar")
+            leer(*q.dato)
+            si bandera entonces
+                p:=prim 
+                Mientras p<>nil hacer 
+                    p:=*p.prox
+                finmientras //me voy al último elemento y empiezo a cargar atrás  
+                *p.prox:=q
+                *q.prox:=nil 
+            sino 
+                prim:=q
+                *q.prox:=nil
+            finsi 
+        finprocedimiento
+
+        procedimiento eliminar es 
+            comprobar()
+            si bandera entonces
+                esc("ingrese el elemento que desea eliminar")
+                leer(eliminado)
+                p:=prim
+                Mientras p<>nil y eliminado<>*p.dato hacer
+                    p:=*p.prox
+                Finmientras
+                Si eliminado<>*p.dato entonces 
+                    esc("este elemento no existe en la lista")
+                sino 
+                    si p=prim entonces 
+                        prim:=*p.prox 
+                    sino 
+                        si p=nil entonces 
+                            *ant.prox:=nil 
+                        sino 
+                            *ant.prox:=*p.prox 
+                        finsi 
+                    finsi 
+                    disponer(p)
+                finsi 
+            finsi 
+        finprocedimiento
+
+    PROCESO
+       
+        esc("¿Desea realizar una operación?")
+        leer(op)
+        Mientras op="si" hacer 
+            esc("Seleccione la operacion que desea realizar")
+            esc("1-insertar un elemento")
+            esc("2-extraer un elemento")
+            leer(op1)
+            segun op1 hacer 
+                =1: insertar()
+                otro: eliminar()
+            finsegun 
+            esc("¿Desea realizar otra operación?")
+            leer(op)
+        finmientras 
+FINACCION 

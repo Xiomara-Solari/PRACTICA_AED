@@ -1,0 +1,146 @@
+En el nuevo DELIVERY VAMOS-RAPIDO se está diseñando una solución informática para la atención de clientes.
+ Se ha pensado en una LISTA por su dinamismo en cuanto a la cantidad de elementos. Diseñe un algoritmo que
+  realice las siguientes funciones:
+
+Registrar su pedido en una lista Doble (se agrega en Estado P (Pendiente), y se mantiene ordenado por Nombre 
+del Cliente).
+Realizar el envío (cambia estado del pedido de P (pendiente) a E (Enviado)).
+Eliminar del listado de atención una vez recibido el cobro (al atender el cobro del cadete que hizo el trabajo)
+Datos a almacenar por pedido: Nombre, Dirección, Teléfono y Total.
+La información almacenada debe mantenerse ordenada por Nombre del cliente.
+
+accion 4_12 es
+nodo=registro
+    nombre: AN (30)
+    direccion: AN (30)
+    telefono: N (15)
+    total: N (5,2) 
+    estado: ("P", "E")
+    prox: puntero a nodo
+    ant: puntero a nodo
+fin_registro
+
+p, prim, ult, q: puntero a nodo
+op: ("si", "no")
+rta: 1..3
+nom2: AN (30)
+
+procedimiento tomar_pedido es
+    nuevo (q)
+    escribir ("Ingrese nombre")
+    leer (*q.nombre)
+    escribir ("Ingrese direccion")
+    leer (*q.direccion)
+    escribir ("Ingrese telefono")
+    leer (*q.telefono)
+    escribir ("Ingrese monto total del pedido")
+    leer (*q.total)
+    *q.estado:= "P"
+    
+    si prim=nill entonces  // si la lista esat vacia 
+        prim:= q
+        ult:= q 
+        *q.prox:= nill
+        *q.ant:= nill 
+    sino 
+        p:=prim  / me paro en el primer elemento 
+        mientras (p <> nill) y  (*q.nombre < *p.nombre ) hacer
+            p:= p.prox
+        fin_mientras 
+        si p=prim entonces 
+            *q.prox:= p 
+            *p.ant:= q 
+            *q.ant:= nill
+            prim:= q
+        sino 
+            si p=nill entonces 
+                *ult.prox:=q
+                *q.ant:= ult 
+                q*prox:= nill
+                ult:= q 
+            sino 
+                *(*p.ant).prox:= q 
+                *q.ant:= *p.ant 
+                *q.prox:= p 
+                *p.ant:= q 
+            fin_si 
+        fin_si 
+    fin_si
+fin_procedimiento
+
+nom2 
+procedimiento envio es
+    escribir ("Ingrese nombre del cliente")
+    leer (nom2)
+    p:=prim 
+    mientras (p <> nill) y (*p.nombre <> nom2) hacer 
+        p:= *p.prox
+    fin_mientras
+
+    si (*p.nombre = nom2) entonces  
+        *p.estado:= "E"
+    sino 
+        escribir ("No se encontro pedido con ese nombre, quiere registrarlo como nuevo? si/no")
+        leer (op)
+        si op="si" entonces
+            tomar_pedido ()
+        fin_si 
+    fin_si 
+fin_procedimiento
+
+procedimiento informar_pago es 
+    escribir ("ingrese el nombre del cliente")
+    leer (nom2)
+    p:= prim 
+    si prim <> nill entonces 
+        mientras (p <> nill) y (*p.nombre <> nom2) hacer 
+            p:= *p.prox
+        fin_mientras
+
+        si p=nill entonces  // en caso de que no se encuentre
+            escribir ("Lo siento no se encontro el nombre, vuelva a intentar")
+        sino 
+            si prim=ult entonces /en caso de que sea el unico elemento 
+                prim:= nill
+                ult:= nill
+            sino 
+                si p=prim entonces  // en caso de que sea el primer elemento 
+                    prim:= *p.prox 
+                    *prim.ant:=nill 
+                sino 
+                    si p=ult entonces  // en caso de que sea el ultimo elemento 
+                        *(*p.ant).prox:= nill 
+                        ult:= *p.ant 
+                    sino 
+                       *(*p.ant).prox:= *p.prox 
+                        *(*p.prox).ant:= *p.ant 
+                    fin_si 
+                fin_si
+            fin_si
+            disponer (p)
+        fin_si 
+    fin_si
+fin_procedimiento
+                
+proceso
+prim:=nill
+ult:=nill
+
+escribir ("Desea realizar una operacion? si/no")
+leer (op)
+
+mientras op="si" hacer
+    Escribir ("Que desea hacer? 1- Tomar un pedido. 2- realizar un envio. 3- informar un pago")
+    leer (rta)
+    segun rta hacer
+        =1: tomar_pedido ()
+        =2:envio ()
+        otro: informar_pago ()
+    fin_segun 
+    escribir ("Desea realizar otra operacion? si/no")
+    leer (op)
+fin_mientras 
+
+escribir ("Gracias por utilizar nuestro servicio")
+
+

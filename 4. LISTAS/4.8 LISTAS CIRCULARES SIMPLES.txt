@@ -1,0 +1,105 @@
+Escribir un algoritmo que permita buscar, insertar o borrar un elemento 
+identificado con una clave determinada en una lista circular simplemente encadenada.
+
+ACCION 4.8 ES 
+    AMBIENTE
+        nodo=registro
+            dato:entero
+            prox:puntero a nodo
+        finregistro
+        p,q, prim, k, ant: puntero a nodo
+        op:("S", "N")
+        op1: 1..3
+        dato: entero
+
+        procedimiento buscar_elemento ES
+            ESC("Ingrese el elemento que desea encontrar")
+            LEER(dato)
+            p:=prim
+            Mientras (*p.prox <> prim) y (*p.dato <> dato) hacer
+                p:=*p.prox
+            Fin Mientras
+            Si p.dato = dato entonces
+                ESC("elemento encontrado")
+                bandera:=verdadero
+            Sino
+                ESC("este elemento no está en la lista")
+                bandera:=falso
+            Finsi
+        finprocedimiento
+
+        procedimiento eliminar_elemento es
+            buscar_elemento
+            Si bandera entonces 
+                Si prim=nil entonces
+                    ESC("la lista esta vacía")
+                Sino
+                    Si p=*p.prox entonces //unico elemento  
+                        prim:=nil 
+                    Sino
+                        Si p=prim entonces //primer elemento 
+                            k:=prim
+                            Mientras *k.prox <> prim hacer
+                                k:=*k.prox
+                            finmientras
+                            *k.prox:=*p.prox
+                            prim:=*p.prox
+                        Sino
+                            *ant.prox:=*p.prox //elemento medio o último 
+                        Finsi 
+                    Finsi
+                    disponer(p)
+                Finsi
+            Finsi
+        finprocedimiento
+
+        procedimiento insertar_elemento es
+            buscar_elemento
+            Si bandera entonces 
+                ESC("Este elemento ya está en la lista")
+            Sino
+                nuevo(q)
+                *q.dato:=dato 
+                Mientras *p.prox<>prim y *q.dato<*p.dato hacer
+                    p:=*p.prox
+                    ant:=p
+                finmientras
+                Si p=prim entonces //primer elemento
+                    k:=prim
+                    Mientras *k.prox <> prim hacer //k se usa para buscar el último elemento 
+                        k:=*k.prox
+                    finmientras  
+                    *k.prox:=q
+                    *q.prox:=prim
+                    prim:=q
+                Sino
+                    Si *p.prox=prim entonces //ultimo elemento 
+                        *p.prox:=q
+                        *q.prox:=prim 
+                    Sino   //elemento medio 
+                        *(*p.ant).prox:=q
+                        *q.prox:=p
+                    Finsi
+                Finsi
+            Finsi
+        finprocedimiento
+        
+    PROCESO
+        ESC("¿Desea realizar una accion? S/N")
+        LEER(op)
+        Mientras op ="S" hacer
+            ESC("Seleccione la opcion")
+            ESC("1: eliminar elemento")
+            ESC("2: insertar elemento")
+            ESC("3: buscar elemento")
+            LEER(op1)
+            Segun op1 hacer
+                1: eliminar_elemento()
+                2: insertar_elemento()
+                otro: buscar_elemento
+            Finsegun
+            ESC("¿Desea realizar otra acción?")
+            LEER(op)
+        finmientras
+    FINACCION 
+

@@ -1,0 +1,70 @@
+Ejercicio 4.13
+Dada una lista doblemente encadenada de enteros, ordenada en forma creciente,
+escriba un algoritmo que elimine las entradas repetidas. El algoritmo debe verificar
+al inicio que la lista que se pasa como argumento está ordenada; en caso afirmativo realizar
+la depuración y emitir un mensaje de 'ÉXITO'; en caso contrario, emitir un mensaje de 'ERROR'.
+
+ACCION 4.3 (prim:puntero a nodo) ES
+    AMBIENTE
+        nodo=registro
+            dato: entero 
+            prox:puntero a nodo
+            ant:puntero a nodo
+        finregistro
+
+        prim, p, ant: puntero a nodo 
+
+        bandera: booleano 
+
+        procedimiento eliminar_dato es  
+            si prim=ult entonces  //único elemento 
+                prim:=nil
+                ult:=nil
+            sino 
+                si p=prim entonces 
+                    prim:=*p.prox
+                    *ant.prim:=nill
+                sino 
+                    si p=ult entonces 
+                        *ult.ant:=ult 
+                        *ult.prox:=nill
+                    sino 
+                        *(*p.ant).prox:=*p.prox
+                        *(*p.prox).ant:=*p.ant 
+                    finsi 
+                finsi 
+            finsi
+            disponer(p)
+        finprocedimiento
+
+
+
+    PROCESO
+        bandera:=verdadero
+        Si prim=nil entonces 
+            esc("esta lista está vacía")
+        sino 
+            p:=prim 
+            Mientras (p<>nil) hacer 
+                Si *(*p.ant).dato > *p.dato entonces 
+                    bandera:=falso 
+                finsi 
+                p:=*p.prox 
+            Finmientras 
+            Si bandera entonces 
+                p:=prim 
+                Mientras p<>nil hacer 
+                    Si p=*p.prox entonces 
+                        eliminar_dato()
+                    finsi
+                    p:=*p.prox 
+                Finmientras 
+                esc("EXITO")
+                esc("Lista ordenada, ya se eliminaron los duplicados")
+            Sino 
+                esc("ERROR")
+                esc("La lista no está ordenada")
+            Finsi 
+        finsi 
+FINACCION 
+

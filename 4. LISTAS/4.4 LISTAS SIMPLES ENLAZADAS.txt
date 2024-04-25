@@ -1,0 +1,48 @@
+Ejercicio 4.4¶
+Se dispone de una lista simplemente encadenada cuyos registros están ordenados en forma ascendente por una
+clave de tipo entero; diseñar un algoritmo que invierta el orden de la lista.
+
+ACCION 4.4 (prim:puntero a nodo) ES
+    AMBIENTE
+        nodo=registro
+            dato: entero
+            prox: puntero a nodo
+        finregistro
+
+        p, prim, prim2, q: puntero a nodo
+
+    PROCESO
+        prim2:=nil //lista nueva
+        p:=prim 
+
+        Mientras p<>nil hacer
+            nuevo(q)
+            *q.dato:=*p.dato
+            si prim2 = nil entonces //siempre es primer elemento 
+			    *q.prox:= nil		
+		    sino
+			    *q.prox:= prim2		//carga apilada lifo		
+		    fs
+            //invierte el orden de cualquier lista
+            prim2:=q //se asigna en los dos casos 
+		    p:=*p.prox
+        Finmientras
+
+        esc("lista invertida")
+	    p:= prim2
+
+	    Mientras (p<>nil) hacer		//muestro en pantalla la inversa
+		    esc(p)
+		    p:=*p.prox
+        Finmientras 
+FINACCION 
+
+
+3 4 5 6 7 8
+
+8 7 6 5 4 3
+
+
+
+
+

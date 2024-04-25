@@ -1,0 +1,28 @@
+Ejercicio 4.3¶
+Dada una lista simplemente encadenada de números diseñar un algoritmo que calcule en forma independiente:
+ La suma de los números impares, y la suma de los números pares.
+
+ACCION 4.3 (prim: puntero a nodo) ES  //si ya tengo una lista 
+    AMBIENTE
+        nodo=registro
+            dato: entero
+            prox: puntero a nodo
+        finregistro
+        p, prim: puntero a nodo
+
+
+    PROCESO
+        numerospares:=0
+        numerosimpares:=0
+        p:=prim  //me aseguro de estar en el primer elemento 
+        Mientras p<>nil hacer
+            Si *p.dato MOD 2 = 0 entonces
+                numerospares:= numeros pares + *p.dato
+            Sino
+                numerosimpares:=numerosimpares + *p.dato
+            finsi
+            p:=*p.prox //avanzo 
+        FinMientras
+        esc("la suma de los numeros pares es:" numerospares)
+        esc("la suma de los numeros impares es:" numerosimpares)
+FINACCION

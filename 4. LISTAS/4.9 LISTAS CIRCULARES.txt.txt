@@ -1,0 +1,117 @@
+
+Dada una lista circular de 8 elementos que contienen, cada uno, un valor numérico entero para encriptación,
+encriptar un texto ingresado por teclado (arreglo de caracteres de 255 elementos como máximo).
+El texto encriptado debe almacenarse en una lista de salida simplemente encadenada y, por último mostrar por pantalla.
+
+ENCRIPTAR //asumo que es el nodo
+
+| Multiplicador N(5) | Prox Puntero |
+
+La encriptación se realiza según las siguientes pautas:
+
+Dada la posición del carácter dentro del texto, buscar en la lista circular de encriptación el multiplicador correspondiente, 
+de acuerdo a su posición lógica en la lista. Por ejemplo: como solo hay 8 multiplicadores, si se ingresa un arreglo de 10 caracteres,
+para encriptar los ultimos dos se utilizarían los multiplicadores 1 y 2.
+
+Se usa la función ASCII(Carácter) para convertir cada carácter del arreglo en un entero.
+
+Luego se lo multiplican los valores obtenidos en los 2 pasos anteriores.
+
+Por último se descompone el resultado obtenido en 3 en cada uno de sus dígitos, 
+se los suma y se guarda en la lista de salida. Ej: si en el paso 3 me dio 123, 1+2+3=6.
+
+ACCION 4.9 ES
+    AMBIENTE
+        nodoc=registro //lista circular con ocho elementos que son numeros enteros 
+            multiplicador: entero //multiplicador es dato 
+            prox:puntero a nodoc
+        finregistro
+        p, ant, prim: puntero a nodoc
+
+        A: arreglo de [1..255] de caracter 
+
+        nodo2=registro
+            dato: entero
+            prox:puntero a nodo
+        finregistro 
+
+        p2, ant2, q, prim2, k: puntero a nodo2
+
+
+    PROCESO
+    i:=1
+    ESC("Ingrese el texto que desea encriptar. Atención: su texto no puede tener más de 255 caracteres")
+    ESC("Para concluir el texto ingrese un punto final")
+    REPETIR
+        LEER(A[i])
+        i:= i + 1
+    HASTA QUE i>255 o a[i]="."
+    //aca ya me ingreso todo el texto 
+
+    prim2:=nil //creo una lista nueva 
+    p:=prim //lista circular que ya tengo 
+    i:=1 //mi texto empieza en la posicion 1 del arreglo 
+
+    Mientras A[i]<> "." hacer
+        convertircaracter:=ASCCI(A[I]) //caracter del arreglo convertido a numero 
+        multiplicador2:=*p.multiplicador //contenido del nodo circular de la posicion i 
+        salida:=convertircaracter*multiplicador2
+        numero:= salida 
+        descomp:= 0				//tiene la sumatoria de los digitos del valor multiplicado anteriormente, para un caracter
+		mientras numero <> 0 hacer
+			descomp:= descomp + (numero mod 10)  345 a descomp le va 5
+			numero:= numero div 10  //trunca el decimal  
+		finmientras
+        //descomp ya tiene la suma de los dígitos 
+		nuevo(q); *q.dato:= descomp  		//añado a la lista de salida el valor encriptado del caracter, carga encolada
+		si prim2= nil entonces
+			prim2:= q
+			*q.prox:= nil
+		sino
+			p2:=prim2  //me posiciono en el inicio 
+            ant2:=nil
+			mientras p2 <> nil hacer //avanzo hasta el final 
+				ant2:= p2
+				p2:= *p2.prox
+			finmientras
+			*ant2.prox:= q //para ponerlo siempre al final 
+			*q.prox:= p2
+		finsi
+		//ya puse el nodo en la lista
+        //el nodo viene a ser el primer caracter 
+		i:= i + 1   			//avanzo en el arreglo
+		p:= *p.Prox 			//avanzo en la lista de los multiplicadores
+	Finmientras 
+    //ya tengo todo el texto encriptado 
+	p2:= prim2
+	mientras p2<> nil hacer		//voy mostrando la lista de salida 		
+		esc(*p2.dato)
+		p2:= *p2.prox
+	finmientras
+Fin_accion.
+
+
+CARGA ENCOLADA  //el primer dato que se carga es el primer dato que sale como el supermercado 
+si prim2= nil entonces
+    prim2:= q
+    *q.prox:= nil
+sino
+    p2:=prim2  //me posiciono en el inicio 
+    ant2:=nil
+    mientras p2 <> nil hacer //avanzo hasta el final 
+        ant2:= p2
+        p2:= *p2.prox
+    finmientras
+    *ant2.prox:= q //para ponerlo siempre al final 
+        *q.prox:= p2
+finsi
+
+CARGA APILADA  //orden invertido de los datos, el primero que entra sera el ultimo que salga 
+si prim=nil entonces 
+    prim:=q
+    *q.prox:=nil
+sino 
+    *q.prox:=prim 
+    prim:=q
+finsi 
+
